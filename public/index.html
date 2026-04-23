@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BO3 Online</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="menu" class="screen">
+  <div class="menu-bg"></div>
+  <div class="menu-content">
+    <div class="game-title">
+      <span class="t-bo">BO</span><span class="t-3">3</span>
+      <div class="t-sub">ONLINE</div>
+    </div>
+    <input type="text" id="username-input" placeholder="ENTER CALLSIGN" maxlength="16" autocomplete="off">
+    <div class="menu-btns">
+      <button class="mbtn primary" id="btn-create">CREATE MATCH</button>
+      <button class="mbtn" id="btn-join-open">JOIN MATCH</button>
+    </div>
+    <div class="menu-footer">WASD Move &bull; Space Jump &bull; Shift Sprint &bull; Ctrl Slide &bull; R Reload &bull; 1-4 Weapons &bull; Tab Score</div>
+  </div>
+</div>
+
+<div id="join-screen" class="screen hidden">
+  <div class="join-panel">
+    <div class="jp-title">JOIN MATCH</div>
+    <input type="text" id="room-code-input" placeholder="ROOM CODE" maxlength="6" autocomplete="off">
+    <div class="jp-btns">
+      <button class="mbtn primary" id="btn-join-confirm">JOIN</button>
+      <button class="mbtn" id="btn-back">BACK</button>
+    </div>
+  </div>
+</div>
+
+<canvas id="gameCanvas"></canvas>
+
+<div id="hud" class="hidden">
+  <div id="crosshair">
+    <div class="c-v"></div>
+    <div class="c-h"></div>
+  </div>
+
+  <div id="hitmarker" class="hidden">
+    <div class="hm tl"></div>
+    <div class="hm tr"></div>
+    <div class="hm bl"></div>
+    <div class="hm br"></div>
+  </div>
+
+  <div id="health-box">
+    <div id="hb-bar-bg"><div id="hb-bar"></div></div>
+    <div id="hb-val">100</div>
+  </div>
+
+  <div id="ammo-box">
+    <span id="a-cur">30</span>
+    <span class="a-slash">/</span>
+    <span id="a-res">270</span>
+  </div>
+
+  <div id="weapon-label">KN-44</div>
+
+  <div id="killfeed"></div>
+
+  <div id="room-box">
+    <div id="room-code-label"></div>
+    <div id="score-list"></div>
+  </div>
+
+  <div id="wallrun-bar" class="hidden"><div id="wallrun-fill"></div></div>
+
+  <div id="death-overlay" class="hidden">
+    <div class="death-title">ELIMINATED</div>
+    <div id="death-by"></div>
+    <div class="death-resp">Respawning in <span id="resp-count">3</span>s</div>
+  </div>
+
+  <div id="reload-bar" class="hidden"><div id="reload-fill"></div></div>
+
+  <div id="damage-flash"></div>
+  <div id="low-health-vignette"></div>
+</div>
+
+<!-- Sniper scope overlay -->
+<div id="scope-overlay" class="hidden">
+  <div id="scope-circle">
+    <div class="sc-h"></div>
+    <div class="sc-v"></div>
+    <div class="sc-dot" style="left:50%;top:25%"></div>
+    <div class="sc-dot" style="left:50%;top:75%"></div>
+    <div class="sc-dot" style="left:25%;top:50%"></div>
+    <div class="sc-dot" style="left:75%;top:50%"></div>
+    <div class="sc-range">100m</div>
+  </div>
+</div>
+
+<div id="lock-overlay" class="hidden">
+  <div class="lo-box">
+    <div class="lo-title">PAUSED</div>
+    <div class="lo-hint">Click to resume</div>
+    <div class="lo-keys">
+      <div><b>WASD</b> Move</div>
+      <div><b>Space</b> Jump / Wall-Jump</div>
+      <div><b>Shift</b> Sprint</div>
+      <div><b>Ctrl</b> Slide</div>
+      <div><b>1-5</b> Switch Weapon</div>
+      <div><b>E / RMB</b> Scope / ADS</div>
+      <div><b>R</b> Reload</div>
+      <div><b>Tab</b> Scoreboard</div>
+      <div><b>T</b> Chat</div>
+    </div>
+  </div>
+</div>
+
+<div id="scoreboard" class="hidden">
+  <div class="sb-title">SCOREBOARD</div>
+  <div class="sb-head"><span>PLAYER</span><span>K</span><span>D</span><span>K/D</span></div>
+  <div id="sb-rows"></div>
+</div>
+
+<div id="chat-wrap" class="hidden">
+  <div id="chat-msgs"></div>
+  <input type="text" id="chat-input" placeholder="Say something..." maxlength="100">
+</div>
+
+<div id="weapon-wheel" class="hidden">
+  <div class="ww-slot active" data-w="0">KN-44<div class="ww-sub">Assault Rifle</div></div>
+  <div class="ww-slot" data-w="1">Vesper<div class="ww-sub">SMG</div></div>
+  <div class="ww-slot" data-w="2">Haymaker<div class="ww-sub">Shotgun</div></div>
+  <div class="ww-slot" data-w="3">Sheiva<div class="ww-sub">DMR</div></div>
+  <div class="ww-slot" data-w="4">Drakon<div class="ww-sub">Sniper</div></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="game.js"></script>
+</body>
+</html>
