@@ -1031,10 +1031,21 @@ class RemotePlayer {
     this.username = data.username;
     this.alive = data.isAlive !== false;
 
-    const bodyGeo = new THREE.CapsuleGeometry(0.35, 1.0, 4, 8);
-    const bodyMat = new THREE.MeshLambertMaterial({ color: data.color || 0xff4400 });
-    this.mesh = new THREE.Mesh(bodyGeo, bodyMat);
-    this.mesh.castShadow = true;
+    // CapsuleGeometry not in r134 - build from cylinder + 2 spheres
+    const playerColor = data.color || 0xff4400;
+    const bodyMat = new THREE.MeshLambertMaterial({ color: playerColor });
+    this.mesh = new THREE.Group();
+    const torso = new THREE.Mesh(new THREE.CylinderGeometry(0.32, 0.32, 1.2, 8), bodyMat);
+    torso.position.y = 0.1;
+    this.mesh.add(torso);
+    const head = new THREE.Mesh(new THREE.SphereGeometry(0.28, 8, 8), bodyMat);
+    head.position.y = 0.9;
+    this.mesh.add(head);
+    // Bright team color stripe so you can actually see them
+    const stripeMat = new THREE.MeshLambertMaterial({ color: 0xffffff });
+    const stripe = new THREE.Mesh(new THREE.CylinderGeometry(0.33, 0.33, 0.08, 8), stripeMat);
+    stripe.position.y = 0.3;
+    this.mesh.add(stripe);
 
     // Separate hitbox (invisible) for easier raycasting
     const hitGeo = new THREE.BoxGeometry(0.7, 1.8, 0.7);
