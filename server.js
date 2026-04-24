@@ -169,4 +169,4 @@ io.on('connection', (socket) => {
 });
 
 const PORT = process.env.PORT || 3333;
-server.listen(PORT, () => console.log(`BO3 Online running on http://localhost:${PORT}`));
+server.listen(PORT, () => console.log(`RAJA running on http://localhost:${PORT}`));

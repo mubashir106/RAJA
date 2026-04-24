@@ -1,7 +1,7 @@
 {
-  "name": "bo3-online",
+  "name": "raja",
   "version": "1.0.0",
-  "description": "BO3-inspired browser FPS with wall running",
+  "description": "RAJA - browser FPS with wall running",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
