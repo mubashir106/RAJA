@@ -1421,7 +1421,15 @@ function connectSocket(cb) {
     addChatMessage(data.username, data.message);
   });
 
-  cb();
+  // Wait for actual connection before firing callback
+  if (socket.connected) {
+    cb();
+  } else {
+    socket.once('connect', cb);
+    socket.once('connect_error', () => {
+      alert('Could not connect to server. Check the URL and try again.');
+    });
+  }
 }
 
 // ===== START GAME =====
@@ -1489,11 +1497,19 @@ document.getElementById('btn-back').addEventListener('click', () => {
 
 document.getElementById('btn-join-confirm').addEventListener('click', () => {
   const code = document.getElementById('room-code-input').value.trim().toUpperCase();
-  const username = document.getElementById('username-input').value.trim() || 'Operator';
-  if (!code) return;
+  const usernameA = document.getElementById('username-input').value.trim();
+  const usernameB = document.getElementById('join-username-input')?.value.trim();
+  const username = usernameA || usernameB || 'Operator';
+  if (!code) { alert('Enter a room code first.'); return; }
+
+  const btn = document.getElementById('btn-join-confirm');
+  btn.textContent = 'CONNECTING...';
+  btn.disabled = true;
 
   connectSocket(() => {
     socket.emit('join_room', { code, username }, (res) => {
+      btn.textContent = 'JOIN';
+      btn.disabled = false;
       if (res.success) {
         enterGame(res.player, res.players, res.code);
       } else {
