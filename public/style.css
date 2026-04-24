@@ -546,3 +546,52 @@ body {
   letter-spacing: 1px;
   font-family: 'Courier New', monospace;
 }
+
+/* ===== INVITE BANNER ===== */
+#invite-banner {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.92);
+  border: 1px solid #ff8c00;
+  padding: 16px 24px;
+  z-index: 90;
+  text-align: center;
+  min-width: 420px;
+  font-family: 'Courier New', monospace;
+}
+.ib-code {
+  font-size: 22px;
+  font-weight: 700;
+  color: #ff8c00;
+  letter-spacing: 6px;
+  margin-bottom: 6px;
+}
+.ib-link {
+  font-size: 11px;
+  color: rgba(255,255,255,0.5);
+  word-break: break-all;
+  margin-bottom: 12px;
+}
+.ib-copy {
+  background: #ff8c00;
+  border: none;
+  color: #000;
+  font-family: 'Courier New', monospace;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 2px;
+  padding: 8px 20px;
+  cursor: pointer;
+  margin-right: 8px;
+}
+.ib-close {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.3);
+  color: rgba(255,255,255,0.5);
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  padding: 8px 12px;
+  cursor: pointer;
+}

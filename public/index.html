@@ -85,6 +85,14 @@
   <div id="low-health-vignette"></div>
 </div>
 
+<!-- Invite banner (shown after creating room) -->
+<div id="invite-banner" class="hidden">
+  <div class="ib-code">ROOM: <span id="invite-code-text"></span></div>
+  <div class="ib-link">Invite link: <span id="invite-link-text"></span></div>
+  <button class="ib-copy" onclick="navigator.clipboard.writeText(document.getElementById('invite-link-text').textContent); this.textContent='COPIED!'">COPY LINK</button>
+  <button class="ib-close" onclick="document.getElementById('invite-banner').classList.add('hidden')">X</button>
+</div>
+
 <!-- Sniper scope overlay -->
 <div id="scope-overlay" class="hidden">
   <div id="scope-circle">

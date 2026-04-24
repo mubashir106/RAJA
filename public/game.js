@@ -1175,6 +1175,14 @@ function flashDamage() {
 
 // ===== KILL FEED =====
 const killFeedEntries = [];
+function showInviteBanner(code, link) {
+  const el = document.getElementById('invite-banner');
+  if (!el) return;
+  document.getElementById('invite-code-text').textContent = code;
+  document.getElementById('invite-link-text').textContent = link;
+  el.classList.remove('hidden');
+}
+
 function addKillFeed(killerName, victimName, isMine) {
   const kf = document.getElementById('killfeed');
   const el = document.createElement('div');
@@ -1475,10 +1483,15 @@ document.getElementById('btn-create').addEventListener('click', () => {
     socket.emit('create_room', { username }, (res) => {
       if (res.success) {
         enterGame(res.player, res.players, res.code);
-        // Show room code to copy
+        // Show invite link after entering game
         setTimeout(() => {
-          addChatMessage('System', `Room code: ${res.code} | Share with friends!`);
-        }, 500);
+          const link = `${location.origin}?join=${res.code}`;
+          addChatMessage('System', `Room code: ${res.code}`);
+          addChatMessage('System', `Invite link copied to clipboard! Send to friend.`);
+          navigator.clipboard?.writeText(link);
+          // Also show a visible banner
+          showInviteBanner(res.code, link);
+        }, 600);
       }
     });
   });
@@ -1525,3 +1538,16 @@ document.getElementById('room-code-input').addEventListener('keydown', (e) => {
 document.getElementById('username-input').addEventListener('keydown', (e) => {
   if (e.code === 'Enter') document.getElementById('btn-create').click();
 });
+
+// Auto-fill room code from URL ?join=CODE
+(function() {
+  const params = new URLSearchParams(location.search);
+  const joinCode = params.get('join');
+  if (joinCode) {
+    document.getElementById('room-code-input').value = joinCode.toUpperCase();
+    // Switch straight to join screen
+    document.getElementById('menu').classList.add('hidden');
+    document.getElementById('join-screen').classList.remove('hidden');
+    document.getElementById('join-username-input').focus();
+  }
+})();
