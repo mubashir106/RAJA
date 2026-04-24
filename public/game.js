@@ -1252,7 +1252,6 @@ function requestLock() {
 document.addEventListener('pointerlockchange', () => {
   pointerLocked = !!document.pointerLockElement;
   document.getElementById('lock-overlay').classList.toggle('hidden', pointerLocked);
-  if (pointerLocked && !gameActive) startGame();
 });
 
 // ===== INPUT EVENTS =====
@@ -1338,13 +1337,9 @@ document.getElementById('chat-input').addEventListener('keydown', (e) => {
   }
 });
 
-// Click to re-lock
-document.getElementById('gameCanvas').addEventListener('click', () => {
-  if (!pointerLocked && gameActive) requestLock();
-});
-document.getElementById('lock-overlay').addEventListener('click', () => {
-  if (gameActive) requestLock();
-});
+// Click anywhere to grab pointer lock
+document.getElementById('gameCanvas').addEventListener('click', requestLock);
+document.getElementById('lock-overlay').addEventListener('click', requestLock);
 
 // ===== GAME LOOP =====
 let lastTime = 0;
@@ -1460,20 +1455,18 @@ function enterGame(playerData, existingPlayers, code) {
   document.getElementById('lock-overlay').classList.remove('hidden');
 
   initScene();
+  // Start game immediately - don't wait for pointer lock
+  startGame();
   requestAnimationFrame(gameLoop);
 
   localPlayer = new LocalPlayer(playerData.position);
 
-  // Add existing players
   existingPlayers.forEach(p => {
     remotePlayers[p.id] = new RemotePlayer(p);
     scores[p.id] = { id: p.id, username: p.username, kills: p.kills, deaths: p.deaths };
   });
   scores[myId] = { id: myId, username: playerData.username, kills: 0, deaths: 0 };
   refreshScoreUI();
-
-  // Request pointer lock
-  document.getElementById('gameCanvas').requestPointerLock();
 }
 
 // ===== MENU LOGIC =====
